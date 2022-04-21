@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('MediaMarktChallenge'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Sample text'),
       ),
     );
