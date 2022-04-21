@@ -20,7 +20,11 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
       ),
     );
 
-    print(result);
+    final Map<String, dynamic>? data = result.data;
+
+    if (data != null) {
+      final List<dynamic> issuesRawList = data['repository']['issues']['edges'];
+    }
   }
 }
 
