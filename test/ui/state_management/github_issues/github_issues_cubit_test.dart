@@ -45,6 +45,24 @@ void main() {
       );
 
       expect(_githubIssuesCubit.state, isA<GithubIssuesLoadedState>());
+
+      final List<Issue> issues =
+          (_githubIssuesCubit.state as GithubIssuesLoadedState).issues;
+      expect(issues.length, 2);
+
+      final Issue firstIssue = issues.first;
+      expect(firstIssue.id, 'I_kwDOAeUeuM5IJQZX');
+      expect(firstIssue.number, 102266);
+      expect(firstIssue.state, 'OPEN');
+      expect(
+        firstIssue.url,
+        'https://github.com/flutter/flutter/issues/102266',
+      );
+      expect(firstIssue.issueAuthor.login, 'filmil');
+      expect(
+        firstIssue.issueAuthor.avatarUrl,
+        'https://avatars.githubusercontent.com/u/246576?v=4',
+      );
     });
   });
 }
