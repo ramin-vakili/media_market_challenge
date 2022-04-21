@@ -18,10 +18,16 @@ class GraphqlIssuesService implements IssuesRepository {
   Future<List<Issue>> getIssues({
     String repoName = 'flutter',
     String repoOwner = 'flutter',
+    int pageSize = 20,
+    String? cursor,
   }) async {
     final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
       QueryOptions<dynamic>(
         document: gql(getIssuesQuery),
+        variables: <String, dynamic>{
+          'pageSize': pageSize,
+          'cursor': cursor,
+        },
       ),
     );
 
@@ -40,10 +46,11 @@ class GraphqlIssuesService implements IssuesRepository {
 }
 
 const String getIssuesQuery = r'''
-      query getIssuesQuery() {
+      query getIssuesQuery($pageSize: Int!, $cursor: String) {
         repository(owner: "flutter", name: "flutter") {
           issues(
-            last: 20
+            last: $pageSize
+            before: $cursor
             orderBy: {field: CREATED_AT, direction: ASC}
             filterBy: {states: OPEN}
           ) {
