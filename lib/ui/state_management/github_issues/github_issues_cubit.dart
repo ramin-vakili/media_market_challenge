@@ -1,9 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 
 part 'github_issues_state.dart';
 
 class GithubIssuesCubit extends Cubit<GithubIssuesState> {
-  GithubIssuesCubit() : super(GithubIssuesLoadingState());
+  GithubIssuesCubit(this.issuesRepository) : super(GithubIssuesLoadingState());
 
-  void connectToGraphQL(String url, String token) async {}
+  final IssuesRepository issuesRepository;
+
+  void fetchIssues({
+    required String repoName,
+    required String repoOwner,
+  }) async {
+    try {
+      final List<Issue> issues = await issuesRepository.getIssues(
+        repoName: repoName,
+        repoOwner: repoOwner,
+      );
+
+      emit(GithubIssuesLoadedState(issues));
+    } catch (e) {
+      emit(GithubIssuesErrorState(e.toString()));
+    }
+  }
 }
