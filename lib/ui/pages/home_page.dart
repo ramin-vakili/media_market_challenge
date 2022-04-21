@@ -55,8 +55,16 @@ class _HomePageState extends State<HomePage> {
       );
 
   Widget _buildIssuesList(List<Issue> issues) => ListView.builder(
-        itemBuilder: (_, int index) => Text(issues[index].title),
-        itemCount: issues.length,
+        itemBuilder: (_, int index) {
+          if (index == issues.length) {
+            return const SizedBox(
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          return Text(issues[index].title);
+        },
+        itemCount: issues.length + 1,
         itemExtent: 50,
       );
 
