@@ -14,20 +14,20 @@ class Issue {
   factory Issue.fromJson(Map<String, dynamic> json) => Issue(
         id: json['id'],
         title: json['title'],
-        state: json['state'],
         createdAt: DateTime.parse(json['createdAt']),
         url: json['url'],
-        number: json['number'],
         issueAuthor: IssueAuthor.fromJson(json['author']),
+        number: json['number'],
+        state: json['state'],
       );
 
   final String id;
   final String title;
-  final String state;
   final DateTime createdAt;
   final String url;
-  final int number;
   final IssueAuthor issueAuthor;
+  final int number;
+  final String state;
 
   @override
   bool operator ==(covariant Issue other) => other.id == id;
@@ -36,11 +36,11 @@ class Issue {
   int get hashCode => hashValues(
         id,
         title,
-        state,
         createdAt,
         url,
-        number,
         issueAuthor,
+        number,
+        state,
       );
 }
 

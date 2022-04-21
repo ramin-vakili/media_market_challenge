@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:media_market_challenge/domain/models/issue.dart';
 
 part 'github_issues_state.dart';
 
@@ -24,6 +25,12 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
 
     if (data != null) {
       final List<dynamic> issuesRawList = data['repository']['issues']['edges'];
+
+      final List<Issue> issues = issuesRawList
+          .map<Issue>((dynamic e) => Issue.fromJson(e['node']))
+          .toList();
+
+      print(issues);
     }
   }
 }
