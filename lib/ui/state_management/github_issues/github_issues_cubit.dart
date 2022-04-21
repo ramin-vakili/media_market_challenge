@@ -28,7 +28,7 @@ const String getIssuesQuery = r'''
       query getIssuesQuery() {
         repository(owner: "flutter", name: "flutter") {
           issues(
-            last: 10
+            last: 20
             orderBy: {field: CREATED_AT, direction: ASC}
             filterBy: {states: OPEN}
           ) {
@@ -36,8 +36,19 @@ const String getIssuesQuery = r'''
               node {
                 id
                 title
+                state
+                createdAt
                 url
+                number
+                author {
+                  login
+                  avatarUrl
+                }
               }
+            }
+            pageInfo {
+              hasPreviousPage
+              startCursor
             }
           }
         }
