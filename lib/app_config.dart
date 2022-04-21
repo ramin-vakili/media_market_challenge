@@ -1,0 +1,1 @@
+const String graphqlEndpoint = 'https://api.github.com/graphql';

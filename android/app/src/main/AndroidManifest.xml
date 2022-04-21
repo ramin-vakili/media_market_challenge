@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vakili.ramin.media_market_challenge">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="media_market_challenge"
         android:name="${applicationName}"
