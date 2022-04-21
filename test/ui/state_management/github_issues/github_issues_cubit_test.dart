@@ -38,6 +38,10 @@ void main() {
   });
 
   group('GithubIssues cubit', () {
+    test('state is Loading state initially', () {
+      expect(_githubIssuesCubit.state, isA<GithubIssuesLoadingState>());
+    });
+
     test('emit loaded states if gets the issues', () async {
       await _githubIssuesCubit.fetchIssues(
         repoName: 'mock_repo',
@@ -62,6 +66,19 @@ void main() {
       expect(
         firstIssue.issueAuthor.avatarUrl,
         'https://avatars.githubusercontent.com/u/246576?v=4',
+      );
+    });
+
+    test('emits error state if fetching issues is unsuccessful', () async {
+      await _githubIssuesCubit.fetchIssues(
+        repoName: 'UnknownRepo',
+        repoOwner: 'Unknown',
+      );
+
+      expect(_githubIssuesCubit.state, isA<GithubIssuesErrorState>());
+      expect(
+        (_githubIssuesCubit.state as GithubIssuesErrorState).message,
+        'Repo not found!',
       );
     });
   });
