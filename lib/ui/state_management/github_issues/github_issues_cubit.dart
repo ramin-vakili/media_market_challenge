@@ -9,7 +9,7 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
 
   final IssuesRepository issuesRepository;
 
-  void fetchIssues({
+  Future<void> fetchIssues({
     required String repoName,
     required String repoOwner,
   }) async {
