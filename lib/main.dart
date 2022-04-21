@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_market_challenge/app_config.dart';
+import 'package:media_market_challenge/data/services/graphql_services.dart';
+import 'package:media_market_challenge/tokens.dart';
+import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
 
 import 'ui/pages/home_page.dart';
 
@@ -11,11 +16,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: <BlocProvider<dynamic>>[
+        BlocProvider<GithubIssuesCubit>(
+          create: (_) => GithubIssuesCubit(
+            GraphqlIssuesService(graphqlEndpoint, githubApiToken),
+          ),
+        )
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const HomePage(),
       ),
-      home: const HomePage(),
     );
   }
 }
