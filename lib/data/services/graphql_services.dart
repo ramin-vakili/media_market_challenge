@@ -20,7 +20,7 @@ class GraphqlIssuesService implements IssuesRepository {
     String repoOwner = 'flutter',
   }) async {
     final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
-      QueryOptions(
+      QueryOptions<dynamic>(
         document: gql(getIssuesQuery),
       ),
     );

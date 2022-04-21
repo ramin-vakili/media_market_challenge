@@ -20,7 +20,7 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
       );
 
       emit(GithubIssuesLoadedState(issues));
-    } catch (e) {
+    } on Exception catch (e) {
       emit(GithubIssuesErrorState(e.toString()));
     }
   }

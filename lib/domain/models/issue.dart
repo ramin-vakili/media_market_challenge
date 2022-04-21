@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+@immutable
 class Issue {
   const Issue({
     required this.id,
@@ -44,16 +45,17 @@ class Issue {
       );
 }
 
+@immutable
 class IssueAuthor {
   const IssueAuthor({required this.login, required this.avatarUrl});
-
-  final String login;
-  final String avatarUrl;
 
   factory IssueAuthor.fromJson(Map<String, dynamic> json) => IssueAuthor(
         login: json['login'],
         avatarUrl: json['avatarUrl'],
       );
+
+  final String login;
+  final String avatarUrl;
 
   @override
   bool operator ==(covariant IssueAuthor other) =>
