@@ -10,8 +10,8 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
   final IssuesRepository issuesRepository;
 
   Future<void> fetchIssues({
-    required String repoName,
-    required String repoOwner,
+    String repoName = 'flutter',
+    String repoOwner = 'flutter',
   }) async {
     try {
       final List<Issue> issues = await issuesRepository.getIssues(
@@ -23,5 +23,9 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
     } on Exception catch (e) {
       emit(GithubIssuesErrorState(e.toString()));
     }
+  }
+
+  Future<void> loadMore() async {
+    Future<void>.value();
   }
 }

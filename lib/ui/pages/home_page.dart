@@ -13,12 +13,26 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final GithubIssuesCubit _githubIssuesCubit;
 
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController()
+      ..addListener(() {
+        if (_scrollController.position.extentAfter < 500) {
+          _githubIssuesCubit.loadMore();
+        }
+      });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     _githubIssuesCubit = BlocProvider.of<GithubIssuesCubit>(context)
-      ..fetchIssues(repoName: 'flutter', repoOwner: 'flutter,');
+      ..fetchIssues();
   }
 
   @override
