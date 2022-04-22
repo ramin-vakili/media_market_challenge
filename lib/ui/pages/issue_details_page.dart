@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:media_market_challenge/data/services/graphql_services.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/ui/state_management/github_issue_details/github_issue_details_cubit.dart';
@@ -34,7 +35,7 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
         builder: (_, GithubIssueDetailsState state) {
           if (state is GithubIssueDetailsLoadedState) {
             return SingleChildScrollView(
-              child: Text(state.issueDetails.bodyHTML),
+              child: Html(data: state.issueDetails.bodyHTML),
             );
           } else if (state is GithubIssueDetailsErrorState) {
             return Text(state.message);

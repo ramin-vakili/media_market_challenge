@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   graphql_flutter: ^5.1.0
   cached_network_image: ^3.2.0
+  flutter_html: ^2.2.1
 
 dev_dependencies:
   flutter_test:
