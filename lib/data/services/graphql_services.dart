@@ -31,6 +31,10 @@ class GraphqlIssuesService implements IssuesRepository {
       ),
     );
 
+    if (result.hasException) {
+      throw Exception(result.exception.toString());
+    }
+
     final Map<String, dynamic>? data = result.data;
 
     if (data != null) {

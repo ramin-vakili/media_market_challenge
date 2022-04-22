@@ -13,6 +13,8 @@ class MockGithubIssuesService implements IssuesRepository {
   Future<List<Issue>> getIssues({
     String repoName = 'mock_repo',
     String? repoOwner,
+    int pageSize = 20,
+    String? cursor,
   }) {
     if (repoName == 'mock_repo') {
       return Future.value(
