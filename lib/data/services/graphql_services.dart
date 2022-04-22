@@ -1,4 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 
@@ -16,8 +17,8 @@ class GraphqlIssuesService implements IssuesRepository {
 
   @override
   Future<IssuesPageInfo> getIssues({
-    String repoName = 'flutter',
-    String repoOwner = 'flutter',
+    required String repoName,
+    required String repoOwner,
     int pageSize = 30,
     String? cursor,
   }) async {
@@ -31,19 +32,36 @@ class GraphqlIssuesService implements IssuesRepository {
       ),
     );
 
-    if (result.hasException) {
+    final Map<String, dynamic>? data = result.data;
+
+    if (result.hasException || data == null) {
       throw Exception(result.exception.toString());
     }
 
+    final Map<String, dynamic> issuesRawResult = data['repository']['issues'];
+    return IssuesPageInfo.fromJson(issuesRawResult);
+  }
+
+  @override
+  Future<Issue> getIssue({
+    required String repoName,
+    required String repoOwner,
+    required int number,
+  }) async {
+    final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
+      QueryOptions<dynamic>(
+        document: gql(getIssueQuery),
+        variables: <String, dynamic>{'number': number},
+      ),
+    );
+
     final Map<String, dynamic>? data = result.data;
 
-    if (data != null) {
-      final Map<String, dynamic> issuesRawResult = data['repository']['issues'];
-
-      return IssuesPageInfo.fromJson(issuesRawResult);
+    if (result.hasException || data == null) {
+      throw Exception(result.exception.toString());
     }
 
-    return IssuesPageInfo.empty();
+    return Issue.fromJson(data['repository']['issue']);
   }
 }
 
@@ -78,3 +96,24 @@ const String getIssuesQuery = r'''
         }
       }
 ''';
+
+const String getIssueQuery = r'''query getIssueQuery($number: Int!){
+	repository(owner: "flutter", name: "flutter") {
+  	issue(
+    	number: $number
+    ) {
+    	id
+      title
+      state
+      createdAt
+      body
+      bodyHTML
+      url
+      number
+      author {
+        login
+        avatarUrl
+      }
+    }
+  }
+}''';

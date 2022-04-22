@@ -29,6 +29,15 @@ class MockGithubIssuesService implements IssuesRepository {
 
     throw Exception('Repo not found!');
   }
+
+  @override
+  Future<Issue> getIssue({
+    required String repoName,
+    required String repoOwner,
+    required int number,
+  }) {
+    throw UnimplementedError();
+  }
 }
 
 void main() {
