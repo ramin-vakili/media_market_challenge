@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/models/issue_details.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
@@ -31,7 +32,7 @@ class MockGithubIssuesService implements IssuesRepository {
   }
 
   @override
-  Future<Issue> getIssue({
+  Future<IssueDetails> getIssue({
     required String repoName,
     required String repoOwner,
     required int number,

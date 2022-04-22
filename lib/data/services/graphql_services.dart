@@ -1,5 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/models/issue_details.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 
@@ -43,7 +43,7 @@ class GraphqlIssuesService implements IssuesRepository {
   }
 
   @override
-  Future<Issue> getIssue({
+  Future<IssueDetails> getIssue({
     required String repoName,
     required String repoOwner,
     required int number,
@@ -61,7 +61,7 @@ class GraphqlIssuesService implements IssuesRepository {
       throw Exception(result.exception.toString());
     }
 
-    return Issue.fromJson(data['repository']['issue']);
+    return IssueDetails.fromJson(data['repository']['issue']);
   }
 }
 
