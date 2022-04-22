@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
     _scrollController = ScrollController()
       ..addListener(() {
-        if (_scrollController.position.extentAfter < 500) {
+        if (_scrollController.position.extentAfter < 5) {
           _githubIssuesCubit.loadMore();
         }
       });
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
           bloc: _githubIssuesCubit,
           builder: (_, GithubIssuesState state) {
             if (state is GithubIssuesLoadedState) {
-              return _buildIssuesList(state.issues);
+              return _buildIssuesList(state.issuesPageInfo.issues);
             } else if (state is GithubIssuesErrorState) {
               return Center(child: Text(state.message));
             } else {
@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
       );
 
   Widget _buildIssuesList(List<Issue> issues) => ListView.builder(
+        controller: _scrollController,
         itemBuilder: (_, int index) {
           if (index == issues.length) {
             return const SizedBox(
@@ -62,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             );
           }
 
-          return Text(issues[index].title);
+          return Text('$index: ${issues[index].title}');
         },
         itemCount: issues.length + 1,
         itemExtent: 50,

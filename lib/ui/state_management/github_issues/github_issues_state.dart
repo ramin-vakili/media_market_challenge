@@ -5,9 +5,9 @@ abstract class GithubIssuesState {}
 class GithubIssuesLoadingState extends GithubIssuesState {}
 
 class GithubIssuesLoadedState extends GithubIssuesState {
-  GithubIssuesLoadedState(this.issues);
+  GithubIssuesLoadedState(this.issuesPageInfo);
 
-  final List<Issue> issues;
+  final IssuesPageInfo issuesPageInfo;
 }
 
 class GithubIssuesErrorState extends GithubIssuesState {

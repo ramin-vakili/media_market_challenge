@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 
 part 'github_issues_state.dart';
@@ -12,20 +13,45 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
   Future<void> fetchIssues({
     String repoName = 'flutter',
     String repoOwner = 'flutter',
+    int pageSize = 20,
+    String? cursor,
   }) async {
     try {
-      final List<Issue> issues = await issuesRepository.getIssues(
+      final IssuesPageInfo issuesPageInfo = await issuesRepository.getIssues(
         repoName: repoName,
         repoOwner: repoOwner,
+        pageSize: pageSize,
+        cursor: (cursor == null && state is GithubIssuesLoadedState)
+            ? (state as GithubIssuesLoadedState).issuesPageInfo.cursor
+            : cursor,
       );
 
-      emit(GithubIssuesLoadedState(issues));
+      _handleLoadMore(issuesPageInfo);
     } on Exception catch (e) {
       emit(GithubIssuesErrorState(e.toString()));
     }
   }
 
-  Future<void> loadMore() async {
-    Future<void>.value();
+  void _handleLoadMore(IssuesPageInfo issuesPageInfo) {
+    late IssuesPageInfo resultPageInfo;
+
+    final GithubIssuesState currentState = state;
+
+    if (currentState is GithubIssuesLoadedState) {
+      resultPageInfo = IssuesPageInfo(
+        issues: <Issue>[
+          ...currentState.issuesPageInfo.issues,
+          ...issuesPageInfo.issues
+        ],
+        hasPreviousPage: issuesPageInfo.hasPreviousPage,
+        cursor: issuesPageInfo.cursor,
+      );
+    } else {
+      resultPageInfo = issuesPageInfo;
+    }
+
+    emit(GithubIssuesLoadedState(resultPageInfo));
   }
+
+  Future<void> loadMore() => fetchIssues();
 }

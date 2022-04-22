@@ -1,5 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 
 class GraphqlIssuesService implements IssuesRepository {
@@ -15,10 +16,10 @@ class GraphqlIssuesService implements IssuesRepository {
   late final GraphQLClient _graphQLClient;
 
   @override
-  Future<List<Issue>> getIssues({
+  Future<IssuesPageInfo> getIssues({
     String repoName = 'flutter',
     String repoOwner = 'flutter',
-    int pageSize = 20,
+    int pageSize = 30,
     String? cursor,
   }) async {
     final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
@@ -38,14 +39,12 @@ class GraphqlIssuesService implements IssuesRepository {
     final Map<String, dynamic>? data = result.data;
 
     if (data != null) {
-      final List<dynamic> issuesRawList = data['repository']['issues']['edges'];
+      final Map<String, dynamic> issuesRawResult = data['repository']['issues'];
 
-      return issuesRawList
-          .map<Issue>((dynamic e) => Issue.fromJson(e['node']))
-          .toList();
+      return IssuesPageInfo.fromJson(issuesRawResult);
     }
 
-    return <Issue>[];
+    return IssuesPageInfo.empty();
   }
 }
 
