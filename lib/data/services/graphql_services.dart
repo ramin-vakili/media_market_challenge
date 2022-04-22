@@ -1,10 +1,19 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:media_market_challenge/app_config.dart';
 import 'package:media_market_challenge/domain/models/issue_details.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
+import 'package:media_market_challenge/tokens.dart';
 
 class GraphqlIssuesService implements IssuesRepository {
-  GraphqlIssuesService(String url, String token) {
+  factory GraphqlIssuesService() {
+    return _instance ??= GraphqlIssuesService._internal(
+      graphqlEndpoint,
+      githubApiToken,
+    );
+  }
+
+  GraphqlIssuesService._internal(String url, String token) {
     final HttpLink httpLink = HttpLink(url);
 
     _graphQLClient = GraphQLClient(
@@ -14,6 +23,8 @@ class GraphqlIssuesService implements IssuesRepository {
   }
 
   late final GraphQLClient _graphQLClient;
+
+  static GraphqlIssuesService? _instance;
 
   @override
   Future<IssuesPageInfo> getIssues({

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_market_challenge/app_config.dart';
 import 'package:media_market_challenge/data/services/graphql_services.dart';
-import 'package:media_market_challenge/tokens.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
 
 import 'ui/pages/home_page.dart';
@@ -19,9 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<GithubIssuesCubit>(
-          create: (_) => GithubIssuesCubit(
-            GraphqlIssuesService(graphqlEndpoint, githubApiToken),
-          ),
+          create: (_) => GithubIssuesCubit(GraphqlIssuesService()),
         )
       ],
       child: MaterialApp(

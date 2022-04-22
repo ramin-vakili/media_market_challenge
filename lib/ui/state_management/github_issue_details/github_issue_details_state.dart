@@ -5,9 +5,9 @@ abstract class GithubIssueDetailsState {}
 class GithubIssueDetailsLoadingState extends GithubIssueDetailsState {}
 
 class GithubIssueDetailsLoadedState extends GithubIssueDetailsState {
-  GithubIssueDetailsLoadedState(this.issue);
+  GithubIssueDetailsLoadedState(this.issueDetails);
 
-  final Issue issue;
+  final IssueDetails issueDetails;
 }
 
 class GithubIssueDetailsErrorState extends GithubIssueDetailsState {
