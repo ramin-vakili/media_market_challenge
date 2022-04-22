@@ -32,10 +32,13 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         leading: Center(
-          child: UserAvatar(
-            width: 32,
-            height: 32,
-            avatarUrl: widget.issue.issueAuthor.avatarUrl,
+          child: Hero(
+            tag: widget.issue.id,
+            child: UserAvatar(
+              width: 32,
+              height: 32,
+              avatarUrl: widget.issue.issueAuthor.avatarUrl,
+            ),
           ),
         ),
         title: const Text('Issue details'),

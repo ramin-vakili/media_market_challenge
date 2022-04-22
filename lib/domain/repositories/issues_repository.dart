@@ -1,4 +1,3 @@
-import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issue_details.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 

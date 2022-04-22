@@ -10,7 +10,10 @@ class IssueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-        leading: UserAvatar(avatarUrl: issue.issueAuthor.avatarUrl),
+        leading: Hero(
+          tag: issue.id,
+          child: UserAvatar(avatarUrl: issue.issueAuthor.avatarUrl),
+        ),
         title: Text(issue.title),
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
