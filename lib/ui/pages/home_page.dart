@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
+import 'package:media_market_challenge/ui/widgets/issue_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -57,13 +58,18 @@ class _HomePageState extends State<HomePage> {
   Widget _buildIssuesList(List<Issue> issues) => ListView.builder(
         controller: _scrollController,
         itemBuilder: (_, int index) {
+          late Widget item;
+
           if (index == issues.length) {
-            return const SizedBox(
-              child: Center(child: CircularProgressIndicator()),
-            );
+            item = const Center(child: CircularProgressIndicator());
+          } else {
+            item = IssueItem(issue: issues[index]);
           }
 
-          return Text('$index: ${issues[index].title}');
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: item,
+          );
         },
         itemCount: issues.length + 1,
         itemExtent: 50,

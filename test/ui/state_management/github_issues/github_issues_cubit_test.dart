@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
 
@@ -10,21 +10,24 @@ import 'issues_mock_data.dart';
 
 class MockGithubIssuesService implements IssuesRepository {
   @override
-  Future<List<Issue>> getIssues({
+  Future<IssuesPageInfo> getIssues({
     String repoName = 'mock_repo',
     String? repoOwner,
     int pageSize = 20,
     String? cursor,
   }) {
     if (repoName == 'mock_repo') {
-      return Future.value(
-        jsonDecode(issuesMockData)
-            .map<Issue>((dynamic e) => Issue.fromJson(e['node']))
-            .toList(),
+      return Future<IssuesPageInfo>.value(
+        IssuesPageInfo(
+          issues: jsonDecode(issuesMockData)
+              .map<Issue>((dynamic e) => Issue.fromJson(e['node']))
+              .toList(),
+          hasPreviousPage: false,
+        ),
       );
     }
 
-    throw FlutterError('Repo not found!');
+    throw Exception('Repo not found!');
   }
 }
 
@@ -53,7 +56,9 @@ void main() {
       expect(_githubIssuesCubit.state, isA<GithubIssuesLoadedState>());
 
       final List<Issue> issues =
-          (_githubIssuesCubit.state as GithubIssuesLoadedState).issues;
+          (_githubIssuesCubit.state as GithubIssuesLoadedState)
+              .issuesPageInfo
+              .issues;
       expect(issues.length, 2);
 
       final Issue firstIssue = issues.first;
@@ -80,7 +85,7 @@ void main() {
       expect(_githubIssuesCubit.state, isA<GithubIssuesErrorState>());
       expect(
         (_githubIssuesCubit.state as GithubIssuesErrorState).message,
-        'Repo not found!',
+        contains('Repo not found!'),
       );
     });
   });
