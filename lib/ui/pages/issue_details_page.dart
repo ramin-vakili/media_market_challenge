@@ -43,22 +43,40 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
         ),
         title: const Text('Issue details'),
       ),
-      body: BlocBuilder<GithubIssueDetailsCubit, GithubIssueDetailsState>(
-        bloc: _issueDetailsCubit,
-        builder: (_, GithubIssueDetailsState state) {
-          if (state is GithubIssueDetailsLoadedState) {
-            return SingleChildScrollView(
-              child: Html(data: state.issueDetails.bodyHTML),
-            );
-          } else if (state is GithubIssueDetailsErrorState) {
-            return Text(state.message);
-          }
-
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+      body: _buildIssueDetailsSection(),
     );
   }
+
+  BlocBuilder<GithubIssueDetailsCubit, GithubIssueDetailsState>
+      _buildIssueDetailsSection() {
+    return BlocBuilder<GithubIssueDetailsCubit, GithubIssueDetailsState>(
+      bloc: _issueDetailsCubit,
+      builder: (_, GithubIssueDetailsState state) {
+        if (state is GithubIssueDetailsLoadedState) {
+          return Column(
+            children: <Widget>[
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(state.issueDetails.issueAuthor.login),
+                  Text(state.issueDetails.createdAt.toIso8601String()),
+                ],
+              ),
+              Expanded(child: _buildIssueBody(state)),
+            ],
+          );
+        } else if (state is GithubIssueDetailsErrorState) {
+          return Text(state.message);
+        }
+
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  Widget _buildIssueBody(GithubIssueDetailsLoadedState state) =>
+      SingleChildScrollView(child: Html(data: state.issueDetails.bodyHTML));
 
   @override
   void dispose() {
