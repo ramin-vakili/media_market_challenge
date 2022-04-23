@@ -15,6 +15,8 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
     String repoOwner = 'flutter',
     int pageSize = 20,
     String? cursor,
+    String orderBy = 'CREATED_AT',
+    String direction = 'ASC',
   }) async {
     try {
       final IssuesPageInfo issuesPageInfo = await issuesRepository.getIssues(
@@ -24,6 +26,8 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
         cursor: (cursor == null && state is GithubIssuesLoadedState)
             ? (state as GithubIssuesLoadedState).issuesPageInfo.cursor
             : cursor,
+        orderBy: orderBy,
+        direction: direction,
       );
 
       _handleLoadMore(issuesPageInfo);

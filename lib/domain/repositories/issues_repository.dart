@@ -9,6 +9,8 @@ abstract class IssuesRepository {
     required String repoOwner,
     int pageSize,
     String? cursor,
+    String orderBy,
+    String direction,
   });
 
   /// Gets an issue.

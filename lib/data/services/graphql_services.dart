@@ -32,6 +32,8 @@ class GraphqlIssuesService implements IssuesRepository {
     required String repoOwner,
     int pageSize = 30,
     String? cursor,
+    String orderBy = 'CREATED_AT',
+    String direction = 'ASC',
   }) async {
     final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
       QueryOptions<dynamic>(
@@ -41,6 +43,8 @@ class GraphqlIssuesService implements IssuesRepository {
           'owner': repoOwner,
           'name': repoName,
           'cursor': cursor,
+          'orderBy': orderBy,
+          'direction': direction,
         },
       ),
     );
@@ -83,35 +87,42 @@ class GraphqlIssuesService implements IssuesRepository {
 }
 
 const String getIssuesQuery = r'''
-      query getIssuesQuery($pageSize: Int!, $owner: String!, $name: String!, $cursor: String) {
-        repository(owner: $owner, name: $name) {
-          issues(
-            last: $pageSize
-            before: $cursor
-            orderBy: {field: CREATED_AT, direction: ASC}
-            filterBy: {states: OPEN}
-          ) {
-            edges {
-              node {
-                id
-                title
-                state
-                createdAt
-                url
-                number
-                author {
-                  login
-                  avatarUrl
+      query getIssuesQuery(
+        $pageSize: Int!, 
+        $owner: String!, 
+        $name: String!, 
+        $cursor: String,
+        $orderBy: IssueOrderField!,
+        $direction: OrderDirection!
+      ) {
+          repository(owner: $owner, name: $name) {
+            issues(
+              last: $pageSize
+              before: $cursor
+              orderBy: {field: $orderBy, direction: $direction}
+              filterBy: {states: OPEN}
+            ) {
+              edges {
+                node {
+                  id
+                  title
+                  state
+                  createdAt
+                  url
+                  number
+                  author {
+                    login
+                    avatarUrl
+                  }
                 }
               }
-            }
-            pageInfo {
-              hasPreviousPage
-              startCursor
+              pageInfo {
+                hasPreviousPage
+                startCursor
+              }
             }
           }
         }
-      }
 ''';
 
 const String getIssueQuery =
