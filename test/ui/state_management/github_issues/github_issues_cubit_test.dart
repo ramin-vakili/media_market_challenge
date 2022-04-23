@@ -61,8 +61,10 @@ void main() {
 
     test('emit loaded states if gets the issues', () async {
       await _githubIssuesCubit.fetchIssues(
-        repoName: 'mock_repo',
-        repoOwner: 'mock_owner',
+        config: FetchIssuesConfig(
+          repoName: 'mock_repo',
+          repoOwner: 'mock_owner',
+        ),
       );
 
       expect(_githubIssuesCubit.state, isA<GithubIssuesLoadedState>());
@@ -90,8 +92,10 @@ void main() {
 
     test('emits error state if fetching issues is unsuccessful', () async {
       await _githubIssuesCubit.fetchIssues(
-        repoName: 'UnknownRepo',
-        repoOwner: 'Unknown',
+        config: FetchIssuesConfig(
+          repoName: 'UnknownRepo',
+          repoOwner: 'Unknown',
+        ),
       );
 
       expect(_githubIssuesCubit.state, isA<GithubIssuesErrorState>());
