@@ -38,6 +38,8 @@ class GraphqlIssuesService implements IssuesRepository {
         document: gql(getIssuesQuery),
         variables: <String, dynamic>{
           'pageSize': pageSize,
+          'owner': repoOwner,
+          'name': repoName,
           'cursor': cursor,
         },
       ),
@@ -62,7 +64,11 @@ class GraphqlIssuesService implements IssuesRepository {
     final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
       QueryOptions<dynamic>(
         document: gql(getIssueQuery),
-        variables: <String, dynamic>{'number': number},
+        variables: <String, dynamic>{
+          'number': number,
+          'owner': repoOwner,
+          'name': repoName,
+        },
       ),
     );
 
@@ -77,8 +83,8 @@ class GraphqlIssuesService implements IssuesRepository {
 }
 
 const String getIssuesQuery = r'''
-      query getIssuesQuery($pageSize: Int!, $cursor: String) {
-        repository(owner: "flutter", name: "flutter") {
+      query getIssuesQuery($pageSize: Int!, $owner: String!, $name: String!, $cursor: String) {
+        repository(owner: $owner, name: $name) {
           issues(
             last: $pageSize
             before: $cursor
@@ -108,8 +114,9 @@ const String getIssuesQuery = r'''
       }
 ''';
 
-const String getIssueQuery = r'''query getIssueQuery($number: Int!){
-	repository(owner: "flutter", name: "flutter") {
+const String getIssueQuery =
+    r'''query getIssueQuery($number: Int!, $owner: String!, $name: String!){
+	repository(owner: $owner, name: $name) {
   	issue(
     	number: $number
     ) {
