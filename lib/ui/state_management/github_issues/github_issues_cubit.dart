@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_market_challenge/domain/enums.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
+import 'package:media_market_challenge/ui/extensions/enum_extensions.dart';
 
 part 'github_issues_state.dart';
 
@@ -11,18 +13,18 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
 
   final IssuesRepository issuesRepository;
 
-  FetchIssuesConfig? _config;
+  FetchIssuesConfig _config = const FetchIssuesConfig();
+
+  FetchIssuesConfig get currentConfig => _config;
 
   Future<void> updateOrder({
-    String orderBy = 'CREATED_AT',
-    String direction = 'ASC',
+    IssueOrderField orderBy = IssueOrderField.createdAt,
+    OrderDirection direction = OrderDirection.asc,
   }) async {
-    if (_config != null) {
-      _config = _config!.copyWith(orderBy: orderBy, direction: direction);
+    _config = _config.copyWith(orderBy: orderBy, direction: direction);
 
-      emit(GithubIssuesLoadingState());
-      await fetchIssues(config: _config!);
-    }
+    emit(GithubIssuesLoadingState());
+    await fetchIssues(config: _config);
   }
 
   Future<void> fetchIssues({
@@ -38,8 +40,8 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
         repoOwner: config.repoOwner,
         pageSize: config.pageSize,
         cursor: cursor,
-        orderBy: config.orderBy,
-        direction: config.direction,
+        orderBy: config.orderBy.snakeCaseName,
+        direction: config.direction.snakeCaseName,
       );
 
       _prepareLoadedState(issuesPageInfo, refresh);
@@ -72,11 +74,11 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
   Future<void> loadMore() async {
     final GithubIssuesState currentState = state;
 
-    if (currentState is GithubIssuesLoadedState && _config != null) {
+    if (currentState is GithubIssuesLoadedState) {
       await fetchIssues(
         cursor: currentState.issuesPageInfo.cursor,
         refresh: false,
-        config: _config!,
+        config: _config,
       );
     }
   }
@@ -85,22 +87,22 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
 @immutable
 class FetchIssuesConfig {
   const FetchIssuesConfig({
-    this.orderBy = 'CREATED_AT',
-    this.direction = 'ASC',
+    this.orderBy = IssueOrderField.createdAt,
+    this.direction = OrderDirection.asc,
     this.pageSize = 20,
     this.repoName = 'flutter',
     this.repoOwner = 'flutter',
   });
 
-  final String orderBy;
-  final String direction;
+  final IssueOrderField orderBy;
+  final OrderDirection direction;
   final int pageSize;
   final String repoName;
   final String repoOwner;
 
   FetchIssuesConfig copyWith({
-    String? orderBy,
-    String? direction,
+    IssueOrderField? orderBy,
+    OrderDirection? direction,
     int? pageSize,
     String? repoName,
     String? repoOwner,

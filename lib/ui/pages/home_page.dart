@@ -5,7 +5,6 @@ import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
 import 'package:media_market_challenge/ui/widgets/issue_item.dart';
 import 'package:media_market_challenge/ui/widgets/single_choose_option.dart';
-import 'package:media_market_challenge/ui/extensions/enum_extensions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -62,11 +61,9 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           SingleChooseOption<IssueOrderField>(
             options: IssueOrderField.values,
+            selectedOption: _githubIssuesCubit.currentConfig.orderBy,
             onOptionSelected: (IssueOrderField field) async {
-              print('Fetching with $field order');
-              await _githubIssuesCubit.updateOrder(
-                orderBy: field.snakeCaseName,
-              );
+              await _githubIssuesCubit.updateOrder(orderBy: field);
             },
           ),
           Expanded(
