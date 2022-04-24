@@ -114,4 +114,21 @@ class FetchIssuesConfig {
         repoName: repoName ?? this.repoName,
         repoOwner: repoOwner ?? this.repoOwner,
       );
+
+  @override
+  bool operator ==(covariant FetchIssuesConfig other) =>
+      other.orderBy == orderBy &&
+      other.direction == direction &&
+      other.repoName == repoName &&
+      other.repoOwner == repoOwner &&
+      other.pageSize == pageSize;
+
+  @override
+  int get hashCode => hashValues(
+        orderBy,
+        direction,
+        repoName,
+        repoOwner,
+        pageSize,
+      );
 }

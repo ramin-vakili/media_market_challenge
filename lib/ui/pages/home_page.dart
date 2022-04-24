@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_market_challenge/domain/enums.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/ui/dialogs/filter_dialogs.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
 import 'package:media_market_challenge/ui/widgets/issue_item.dart';
-import 'package:media_market_challenge/ui/widgets/single_choose_option.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -42,6 +42,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: const Text('MediaMarktChallenge'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showSelectOrderingDialog(
+                  context: context,
+                  orderField: _githubIssuesCubit.currentConfig.orderBy,
+                  orderDirection: _githubIssuesCubit.currentConfig.direction,
+                  onOrderingChanged: (
+                    IssueOrderField field,
+                    OrderDirection direction,
+                  ) {
+                    _githubIssuesCubit.updateOrder(
+                      orderBy: field,
+                      direction: direction,
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.sort_by_alpha),
+            )
+          ],
         ),
         body: BlocBuilder<GithubIssuesCubit, GithubIssuesState>(
           bloc: _githubIssuesCubit,
@@ -57,37 +78,24 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget _buildIssuesList(List<Issue> issues) => Column(
-        children: <Widget>[
-          SingleChooseOption<IssueOrderField>(
-            options: IssueOrderField.values,
-            selectedOption: _githubIssuesCubit.currentConfig.orderBy,
-            onOptionSelected: (IssueOrderField field) async {
-              await _githubIssuesCubit.updateOrder(orderBy: field);
-            },
-          ),
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (_, int index) {
-                late Widget item;
+  Widget _buildIssuesList(List<Issue> issues) => ListView.builder(
+        controller: _scrollController,
+        itemBuilder: (_, int index) {
+          late Widget item;
 
-                if (index == issues.length) {
-                  item = const Center(child: CircularProgressIndicator());
-                } else {
-                  item = IssueItem(issue: issues[index]);
-                }
+          if (index == issues.length) {
+            item = const Center(child: CircularProgressIndicator());
+          } else {
+            item = IssueItem(issue: issues[index]);
+          }
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: item,
-                );
-              },
-              itemCount: issues.length + 1,
-              itemExtent: 50,
-            ),
-          ),
-        ],
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: item,
+          );
+        },
+        itemCount: issues.length + 1,
+        itemExtent: 50,
       );
 
   @override
