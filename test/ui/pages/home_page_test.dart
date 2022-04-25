@@ -59,12 +59,13 @@ class _MockVisitedIssuesService implements VisitedIssuesRepository {
   }
 }
 
-
 void main() {
   group('Home page', () {
     testWidgets('First shows loading indicator', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const _TestWrapper(),
+        _TestWrapper(
+          issuesCubit: GithubIssuesCubit(_MockGithubIssuesService()),
+        ),
       );
 
       await tester.pump();
@@ -74,7 +75,9 @@ void main() {
 
     testWidgets('Load issues list', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const _TestWrapper(),
+        _TestWrapper(
+          issuesCubit: GithubIssuesCubit(_MockGithubIssuesService()),
+        ),
       );
 
       await tester.pump();
@@ -86,19 +89,34 @@ void main() {
       expect(find.byType(ListView), findsOneWidget);
       expect(find.textContaining('Rename the test component'), findsOneWidget);
     });
+
+    testWidgets('Shows error on facing exception', (WidgetTester tester) async {
+      final GithubIssuesCubit issuesCubit =
+          GithubIssuesCubit(_MockGithubIssuesService());
+
+      await tester.pumpWidget(_TestWrapper(issuesCubit: issuesCubit));
+
+      await issuesCubit.fetchIssues(
+        config: const FetchIssuesConfig(repoName: 'UnknownRepo'),
+      );
+
+      await tester.pump();
+
+      expect(find.textContaining('Repo not found'), findsOneWidget);
+    });
   });
 }
 
 class _TestWrapper extends StatelessWidget {
-  const _TestWrapper({Key? key}) : super(key: key);
+  const _TestWrapper({Key? key, required this.issuesCubit}) : super(key: key);
+
+  final GithubIssuesCubit issuesCubit;
 
   @override
   Widget build(BuildContext context) => MaterialApp(
         home: MultiBlocProvider(
           providers: <BlocProvider<dynamic>>[
-            BlocProvider<GithubIssuesCubit>(
-              create: (_) => GithubIssuesCubit(_MockGithubIssuesService()),
-            ),
+            BlocProvider<GithubIssuesCubit>(create: (_) => issuesCubit),
             BlocProvider<VisitedIssuesCubit>(
               create: (_) => VisitedIssuesCubit(_MockVisitedIssuesService())
                 ..fetchVisitedIssues(),

@@ -9,7 +9,7 @@ import 'package:media_market_challenge/ui/state_management/github_issues/github_
 
 import 'issues_mock_data.dart';
 
-class MockGithubIssuesService implements IssuesRepository {
+class _MockGithubIssuesService implements IssuesRepository {
   @override
   Future<IssuesPageInfo> getIssues({
     String repoName = 'mock_repo',
@@ -47,7 +47,7 @@ void main() {
   late GithubIssuesCubit _githubIssuesCubit;
 
   setUpAll(() {
-    _githubIssuesCubit = GithubIssuesCubit(MockGithubIssuesService());
+    _githubIssuesCubit = GithubIssuesCubit(_MockGithubIssuesService());
   });
 
   tearDownAll(() {

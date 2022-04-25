@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: const Text('MediaMarktChallenge'),
-          actions: [
+          actions: <Widget>[
             IconButton(
               onPressed: () {
                 showSelectOrderingDialog(
