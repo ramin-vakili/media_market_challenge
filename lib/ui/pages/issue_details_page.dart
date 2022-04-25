@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:media_market_challenge/data/services/graphql_services.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 import 'package:media_market_challenge/ui/state_management/github_issue_details/github_issue_details_cubit.dart';
 import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
 import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
 
 class IssueDetailsPage extends StatefulWidget {
-  const IssueDetailsPage({required this.issue, Key? key}) : super(key: key);
+  const IssueDetailsPage({
+    required this.issue,
+    required this.issuesRepository,
+    Key? key,
+  }) : super(key: key);
 
   final Issue issue;
+
+  final IssuesRepository issuesRepository;
 
   @override
   _IssueDetailsPageState createState() => _IssueDetailsPageState();
@@ -22,7 +28,7 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _issueDetailsCubit = GithubIssueDetailsCubit(GraphqlIssuesService())
+    _issueDetailsCubit = GithubIssueDetailsCubit(widget.issuesRepository)
       ..fetchIssue(
         number: widget.issue.number,
       );

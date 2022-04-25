@@ -7,6 +7,8 @@ const String issuesMockData = '''[
               "state": "OPEN",
               "url": "https://github.com/flutter/flutter/issues/102266",
               "createdAt": "2022-04-21T01:29:38Z",
+              "body": "This is body",
+              "bodyHTML": "<body>This is body</body>",
               "author": {
                 "login": "filmil",
                 "avatarUrl": "https://avatars.githubusercontent.com/u/246576?v=4"
