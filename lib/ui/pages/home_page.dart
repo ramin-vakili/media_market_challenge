@@ -4,6 +4,8 @@ import 'package:media_market_challenge/domain/enums.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/ui/dialogs/filter_dialogs.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
+import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
+import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_state.dart';
 import 'package:media_market_challenge/ui/widgets/issue_item.dart';
 
 class HomePage extends StatefulWidget {
@@ -78,25 +80,37 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget _buildIssuesList(List<Issue> issues) => ListView.builder(
-        controller: _scrollController,
-        itemBuilder: (_, int index) {
-          late Widget item;
+  Widget _buildIssuesList(List<Issue> issues) =>
+      BlocBuilder<VisitedIssuesCubit, VisitedIssuesState>(
+          bloc: BlocProvider.of<VisitedIssuesCubit>(context),
+          builder: (_, VisitedIssuesState visitedIssuesState) {
+            if (visitedIssuesState is VisitedIssuesLoadedState) {
+              return ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (_, int index) {
+                  late Widget item;
 
-          if (index == issues.length) {
-            item = const Center(child: CircularProgressIndicator());
-          } else {
-            item = IssueItem(issue: issues[index]);
-          }
+                  if (index == issues.length) {
+                    item = const Center(child: CircularProgressIndicator());
+                  } else {
+                    item = IssueItem(
+                      issue: issues[index],
+                      isVisited:
+                          visitedIssuesState.ids.contains(issues[index].id),
+                    );
+                  }
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: item,
-          );
-        },
-        itemCount: issues.length + 1,
-        itemExtent: 50,
-      );
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: item,
+                  );
+                },
+                itemCount: issues.length + 1,
+                itemExtent: 50,
+              );
+            }
+            return const CircularProgressIndicator();
+          });
 
   @override
   void dispose() {
