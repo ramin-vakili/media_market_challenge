@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/ui/pages/issue_details_page.dart';
-import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
 import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
 
 class IssueItem extends StatelessWidget {
@@ -25,8 +23,6 @@ class IssueItem extends StatelessWidget {
               builder: (_) => IssueDetailsPage(issue: issue),
             ),
           );
-
-          BlocProvider.of<VisitedIssuesCubit>(context).markAsVisited(issue);
         },
         trailing: isVisited ? const Icon(Icons.remove_red_eye) : null,
       );

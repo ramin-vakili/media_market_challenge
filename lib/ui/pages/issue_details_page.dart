@@ -4,6 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:media_market_challenge/data/services/graphql_services.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/ui/state_management/github_issue_details/github_issue_details_cubit.dart';
+import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
 import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
 
 class IssueDetailsPage extends StatefulWidget {
@@ -25,6 +26,8 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
       ..fetchIssue(
         number: widget.issue.number,
       );
+
+    BlocProvider.of<VisitedIssuesCubit>(context).markAsVisited(widget.issue);
   }
 
   @override
