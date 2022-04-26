@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String visitedIssuesKey = 'VISITED_ISSUES_KEY';
 
-class VisitedIssuesService implements VisitedIssuesRepository {
+class SharedPrefVisitedIssuesService implements VisitedIssuesRepository {
   @override
   Future<List<String>> fetchVisitedIssues() async {
     return (await _getPreferences()).getStringList(visitedIssuesKey) ??

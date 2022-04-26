@@ -9,9 +9,9 @@ String _convertCamelToSnakeUppercase(String camelCaseString) => camelCaseString
     .toUpperCase();
 
 extension IssueOrderFieldExtension on IssueOrderField {
-  String get snakeCaseName => _convertCamelToSnakeUppercase(name);
+  String get screamingSnakeCaseName => _convertCamelToSnakeUppercase(name);
 }
 
 extension OrderDirectionExtension on OrderDirection {
-  String get snakeCaseName => _convertCamelToSnakeUppercase(name);
+  String get screamingSnakeCaseName => _convertCamelToSnakeUppercase(name);
 }

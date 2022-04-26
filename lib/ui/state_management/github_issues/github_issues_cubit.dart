@@ -40,8 +40,8 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
         repoOwner: config.repoOwner,
         pageSize: config.pageSize,
         cursor: cursor,
-        orderBy: config.orderBy.snakeCaseName,
-        direction: config.direction.snakeCaseName,
+        orderBy: config.orderBy.screamingSnakeCaseName,
+        direction: config.direction.screamingSnakeCaseName,
       );
 
       _prepareLoadedState(issuesPageInfo, refresh);

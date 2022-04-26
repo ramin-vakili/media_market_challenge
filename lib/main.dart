@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
           create: (_) => GithubIssuesCubit(GraphqlIssuesService()),
         ),
         BlocProvider<VisitedIssuesCubit>(
-          create: (_) =>
-              VisitedIssuesCubit(VisitedIssuesService())..fetchVisitedIssues(),
+          create: (_) => VisitedIssuesCubit(SharedPrefVisitedIssuesService())
+            ..fetchVisitedIssues(),
         )
       ],
       child: MaterialApp(

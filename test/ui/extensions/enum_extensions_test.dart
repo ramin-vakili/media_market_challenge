@@ -8,7 +8,7 @@ void main() {
       test('converts camelCase to Snake upper case', () {
         const IssueOrderField field = IssueOrderField.createdAt;
 
-        expect(field.snakeCaseName, 'CREATED_AT');
+        expect(field.screamingSnakeCaseName, 'CREATED_AT');
       });
     });
 
@@ -16,7 +16,7 @@ void main() {
       test('converts camelCase to Snake upper case', () {
         const OrderDirection direction = OrderDirection.asc;
 
-        expect(direction.snakeCaseName, 'ASC');
+        expect(direction.screamingSnakeCaseName, 'ASC');
       });
     });
   });
