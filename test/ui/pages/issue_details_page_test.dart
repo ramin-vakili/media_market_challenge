@@ -18,16 +18,18 @@ void main() {
   group('Issue details page', () {
     testWidgets('IssueDetails page show issue details',
         (WidgetTester tester) async {
-      await tester.pumpWidget(_TestWrapper(
-        issue: Issue(
-          id: '22433',
-          title: 'Sample title, ',
-          url: '',
-          issueAuthor: const IssueAuthor(login: '', avatarUrl: ''),
-          createdAt: DateTime.now(),
-          number: 102266
+      await tester.pumpWidget(
+        _TestWrapper(
+          issue: Issue(
+            id: '22433',
+            title: 'Sample title, ',
+            url: '',
+            issueAuthor: const IssueAuthor(login: '', avatarUrl: ''),
+            createdAt: DateTime.now(),
+            number: 102266,
+          ),
         ),
-      ));
+      );
       await tester.pump();
 
       expect(find.byType(Row), findsOneWidget);
@@ -37,15 +39,17 @@ void main() {
 
     testWidgets('IssueDetails page show issue details',
         (WidgetTester tester) async {
-          await tester.pumpWidget(_TestWrapper(
-            issue: Issue(
-              id: '0',
-              title: 'Sample title, ',
-              url: '',
-              issueAuthor: const IssueAuthor(login: '', avatarUrl: ''),
-              createdAt: DateTime.now(),
-            ),
-          ));
+      await tester.pumpWidget(
+        _TestWrapper(
+          issue: Issue(
+            id: '0',
+            title: 'Sample title, ',
+            url: '',
+            issueAuthor: const IssueAuthor(login: '', avatarUrl: ''),
+            createdAt: DateTime.now(),
+          ),
+        ),
+      );
 
       await tester.pump();
 
