@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_market_challenge/data/services/graphql_services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
+import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 import 'package:media_market_challenge/ui/pages/issue_details_page.dart';
 import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
 
@@ -23,7 +24,7 @@ class IssueItem extends StatelessWidget {
             MaterialPageRoute<void>(
               builder: (_) => IssueDetailsPage(
                 issue: issue,
-                issuesRepository: GraphqlIssuesService(),
+                issuesRepository: GetIt.instance.get<IssuesRepository>(),
               ),
             ),
           );

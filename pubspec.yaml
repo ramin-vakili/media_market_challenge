@@ -18,6 +18,7 @@ dependencies:
   cached_network_image: ^3.2.0
   flutter_html: ^2.2.1
   shared_preferences: ^2.0.13
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
