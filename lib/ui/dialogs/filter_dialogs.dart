@@ -19,6 +19,12 @@ Future<void> showSelectOrderingDialog({
             orderDirection: orderDirection,
             onOrderingChanged: onOrderingChanged,
           ),
+          actions: <Widget>[
+            MaterialButton(
+              child: const Text('Close'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
         ),
       ),
     );

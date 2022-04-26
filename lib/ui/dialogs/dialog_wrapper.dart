@@ -36,7 +36,7 @@ class _DialogWrapperState extends State<DialogWrapper>
       ),
       child: Container(
         padding: EdgeInsets.symmetric(
-          vertical: screenSize.height * 0.2,
+          vertical: screenSize.height * 0.22,
         ),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
         child: widget.child,
