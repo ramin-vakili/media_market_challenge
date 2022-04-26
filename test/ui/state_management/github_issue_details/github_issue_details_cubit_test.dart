@@ -42,6 +42,22 @@ void main() {
         contains('Rename the test component'),
       );
     });
+
+    test('emit error state if fetching issue details fails', () async {
+      final GithubIssueDetailsCubit githubIssueDetailsCubit =
+          GithubIssueDetailsCubit(_MockGithubIssuesService());
+      await githubIssueDetailsCubit.fetchIssue(number: 0);
+
+      expect(
+        githubIssueDetailsCubit.state,
+        isA<GithubIssueDetailsErrorState>(),
+      );
+
+      expect(
+        (githubIssueDetailsCubit.state as GithubIssueDetailsErrorState).message,
+        contains('Issue not found'),
+      );
+    });
   });
 }
 
