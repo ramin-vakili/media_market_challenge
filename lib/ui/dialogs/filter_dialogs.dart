@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_market_challenge/domain/enums.dart';
+import 'package:media_market_challenge/ui/dialogs/dialog_wrapper.dart';
 import 'package:media_market_challenge/ui/widgets/select_ordering_dialog.dart';
 
 Future<void> showSelectOrderingDialog({
@@ -10,12 +11,14 @@ Future<void> showSelectOrderingDialog({
 }) async =>
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Select ordering'),
-        content: SelectOrderingDialog(
-          orderField: orderField,
-          orderDirection: orderDirection,
-          onOrderingChanged: onOrderingChanged,
+      builder: (BuildContext context) => DialogWrapper(
+        child: AlertDialog(
+          title: const Text('Select ordering'),
+          content: SelectOrderingDialog(
+            orderField: orderField,
+            orderDirection: orderDirection,
+            onOrderingChanged: onOrderingChanged,
+          ),
         ),
       ),
     );

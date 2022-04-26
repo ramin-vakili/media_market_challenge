@@ -20,6 +20,7 @@ class SelectOrderingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SingleChooseOption<IssueOrderField>(
             options: IssueOrderField.values,
