@@ -17,7 +17,7 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => CachedNetworkImage(
         imageUrl: avatarUrl,
-        fit: BoxFit.cover,
+        fit: BoxFit.none,
         width: width,
         height: height,
         imageBuilder: (_, ImageProvider imageProvider) => CircleAvatar(

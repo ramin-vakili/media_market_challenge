@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           dividerColor: const Color(0xffd7d7d7),
-          primaryColor: const Color(0xfff7f8fa),
+          primaryColor: const Color(0xffebeaf2),
         ),
         home: const HomePage(),
       ),

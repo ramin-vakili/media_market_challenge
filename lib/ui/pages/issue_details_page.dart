@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:intl/intl.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 import 'package:media_market_challenge/ui/state_management/github_issue_details/github_issue_details_cubit.dart';
 import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
+import 'package:media_market_challenge/ui/widgets/issue_details_header.dart';
 import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
+
+DateFormat _formatter = DateFormat('yyyy-MM-dd');
 
 class IssueDetailsPage extends StatefulWidget {
   const IssueDetailsPage({
@@ -38,21 +42,31 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Center(
-          child: Hero(
-            tag: widget.issue.id,
-            child: UserAvatar(
-              width: 32,
-              height: 32,
-              avatarUrl: widget.issue.issueAuthor.avatarUrl,
+    return SafeArea(
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverPersistentHeader(
+              delegate: IssueDetailsHeader(
+                buildIcon: (double size) => Hero(
+                  tag: widget.issue.id,
+                  child: UserAvatar(
+                    width: size,
+                    height: size,
+                    avatarUrl: widget.issue.issueAuthor.avatarUrl,
+                  ),
+                ),
+                title: widget.issue.issueAuthor.login,
+                title2: _formatter.format(widget.issue.createdAt),
+              ),
+              pinned: true,
             ),
-          ),
+            SliverToBoxAdapter(
+              child: _buildIssueDetailsSection(),
+            )
+          ],
         ),
-        title: const Text('Issue details'),
       ),
-      body: _buildIssueDetailsSection(),
     );
   }
 
@@ -72,7 +86,7 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
                   Text(state.issueDetails.createdAt.toIso8601String()),
                 ],
               ),
-              Expanded(child: _buildIssueBody(state)),
+              _buildIssueBody(state),
             ],
           );
         } else if (state is GithubIssueDetailsErrorState) {
@@ -85,7 +99,7 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
   }
 
   Widget _buildIssueBody(GithubIssueDetailsLoadedState state) =>
-      SingleChildScrollView(child: Html(data: state.issueDetails.bodyHTML));
+      Html(data: state.issueDetails.bodyHTML);
 
   @override
   void dispose() {
