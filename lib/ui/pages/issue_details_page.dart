@@ -70,6 +70,10 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
           ),
           title: widget.issue.issueAuthor.login,
           title2: _formatter.format(widget.issue.createdAt),
+          buildBackIcon: (_) => IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back_rounded),
+          ),
         ),
         pinned: true,
       );

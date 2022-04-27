@@ -5,9 +5,11 @@ class IssueDetailsHeader extends SliverPersistentHeaderDelegate {
     required this.buildIcon,
     required this.title,
     required this.title2,
+    this.buildBackIcon,
   });
 
   final Widget Function(double size) buildIcon;
+  final WidgetBuilder? buildBackIcon;
   final String title;
 
   final String title2;
@@ -30,6 +32,10 @@ class IssueDetailsHeader extends SliverPersistentHeaderDelegate {
         child: Stack(
           children: <Widget>[
             Align(
+              alignment: Alignment.topLeft,
+              child: buildBackIcon?.call(context),
+            ),
+            Align(
               alignment: Alignment(
                 0,
                 _calculateTitleHorizontalAlignment(
@@ -39,7 +45,7 @@ class IssueDetailsHeader extends SliverPersistentHeaderDelegate {
               child: Text(title),
             ),
             Align(
-              alignment: Alignment(-(shrinkOffset / maxExtent), 0),
+              alignment: Alignment(-(shrinkOffset / maxExtent) * 0.8, 0),
               child: buildIcon(_calculateAvatarSize(shrinkOffset)),
             ),
             Align(
