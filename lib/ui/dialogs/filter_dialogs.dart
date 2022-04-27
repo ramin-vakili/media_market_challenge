@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:media_market_challenge/domain/enums.dart';
+import 'package:media_market_challenge/domain/models/enums.dart';
 import 'package:media_market_challenge/ui/dialogs/dialog_wrapper.dart';
 import 'package:media_market_challenge/ui/widgets/select_ordering_dialog.dart';
 

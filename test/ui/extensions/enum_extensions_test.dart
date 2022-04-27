@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:media_market_challenge/domain/enums.dart';
-import 'package:media_market_challenge/ui/extensions/enum_extensions.dart';
+import 'package:media_market_challenge/domain/models/enums.dart';
+import 'package:media_market_challenge/domain/extensions/enum_extensions.dart';
 
 void main() {
   group('enum extensions', () {

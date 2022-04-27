@@ -12,7 +12,7 @@ class IssueDetails extends Issue {
     required this.body,
     required this.bodyHTML,
     int number = 0,
-    IssueState state = IssueState.close,
+    IssueState state = IssueState.closed,
   }) : super(
     id: id,
     title: title,
@@ -33,7 +33,7 @@ class IssueDetails extends Issue {
         body: json['body'],
         bodyHTML: json['bodyHTML'],
         number: json['number'],
-        state: json['state'] == 'OPEN' ? IssueState.open : IssueState.close,
+        state: json['state'] == 'OPEN' ? IssueState.open : IssueState.closed,
       );
 
   final String body;

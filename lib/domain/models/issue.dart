@@ -9,7 +9,7 @@ class Issue {
     required this.createdAt,
     required this.issueAuthor,
     this.number = 0,
-    this.state = IssueState.close,
+    this.state = IssueState.closed,
   });
 
   factory Issue.fromJson(Map<String, dynamic> json) => Issue(
@@ -19,7 +19,7 @@ class Issue {
         url: json['url'],
         issueAuthor: IssueAuthor.fromJson(json['author']),
         number: json['number'],
-        state: json['state'] == 'OPEN' ? IssueState.open : IssueState.close,
+        state: json['state'] == 'OPEN' ? IssueState.open : IssueState.closed,
       );
 
   final String id;
@@ -65,4 +65,4 @@ class IssueAuthor {
   int get hashCode => hashValues(login, avatarUrl);
 }
 
-enum IssueState { open, close }
+enum IssueState { open, closed }

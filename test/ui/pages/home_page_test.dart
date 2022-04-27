@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:media_market_challenge/domain/models/fetch_issue_config.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issue_details.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
@@ -16,16 +17,8 @@ import '../state_management/github_issues/issues_mock_data.dart';
 
 class _MockGithubIssuesService implements IssuesRepository {
   @override
-  Future<IssuesPageInfo> getIssues({
-    String repoName = 'mock_repo',
-    String? repoOwner,
-    int pageSize = 20,
-    String? cursor,
-    String orderBy = 'CREATED_AT',
-    String direction = 'ASC',
-    List<String>? issueState,
-  }) {
-    if (repoName != 'UnknownRepo') {
+  Future<IssuesPageInfo> getIssues({required FetchIssuesConfig config}) {
+    if (config.repoName != 'UnknownRepo') {
       return Future<IssuesPageInfo>.value(
         IssuesPageInfo(
           issues: jsonDecode(issuesMockData)

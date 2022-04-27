@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_market_challenge/domain/enums.dart';
+import 'package:media_market_challenge/domain/models/enums.dart';
+import 'package:media_market_challenge/domain/models/fetch_issue_config.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
-import 'package:media_market_challenge/ui/extensions/enum_extensions.dart';
 
 part 'github_issues_state.dart';
 
@@ -29,20 +28,13 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
 
   Future<void> fetchIssues({
     required FetchIssuesConfig config,
-    String? cursor,
     bool refresh = true,
   }) async {
     try {
       _config = config;
 
-      final IssuesPageInfo issuesPageInfo = await issuesRepository.getIssues(
-        repoName: config.repoName,
-        repoOwner: config.repoOwner,
-        pageSize: config.pageSize,
-        cursor: cursor,
-        orderBy: config.orderBy.screamingSnakeCaseName,
-        direction: config.direction.screamingSnakeCaseName,
-      );
+      final IssuesPageInfo issuesPageInfo =
+          await issuesRepository.getIssues(config: config);
 
       _prepareLoadedState(issuesPageInfo, refresh);
     } on Exception catch (e) {
@@ -76,59 +68,9 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
 
     if (currentState is GithubIssuesLoadedState) {
       await fetchIssues(
-        cursor: currentState.issuesPageInfo.cursor,
         refresh: false,
-        config: _config,
+        config: _config.copyWith(cursor: currentState.issuesPageInfo.cursor),
       );
     }
   }
-}
-
-@immutable
-class FetchIssuesConfig {
-  const FetchIssuesConfig({
-    this.orderBy = IssueOrderField.createdAt,
-    this.direction = OrderDirection.asc,
-    this.pageSize = 20,
-    this.repoName = 'flutter',
-    this.repoOwner = 'flutter',
-  });
-
-  final IssueOrderField orderBy;
-  final OrderDirection direction;
-  final int pageSize;
-  final String repoName;
-  final String repoOwner;
-
-  FetchIssuesConfig copyWith({
-    IssueOrderField? orderBy,
-    OrderDirection? direction,
-    int? pageSize,
-    String? repoName,
-    String? repoOwner,
-  }) =>
-      FetchIssuesConfig(
-        orderBy: orderBy ?? this.orderBy,
-        direction: direction ?? this.direction,
-        pageSize: pageSize ?? this.pageSize,
-        repoName: repoName ?? this.repoName,
-        repoOwner: repoOwner ?? this.repoOwner,
-      );
-
-  @override
-  bool operator ==(covariant FetchIssuesConfig other) =>
-      other.orderBy == orderBy &&
-      other.direction == direction &&
-      other.repoName == repoName &&
-      other.repoOwner == repoOwner &&
-      other.pageSize == pageSize;
-
-  @override
-  int get hashCode => hashValues(
-        orderBy,
-        direction,
-        repoName,
-        repoOwner,
-        pageSize,
-      );
 }

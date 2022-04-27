@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_market_challenge/domain/enums.dart';
+import 'package:media_market_challenge/domain/models/enums.dart';
+import 'package:media_market_challenge/domain/models/fetch_issue_config.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/ui/dialogs/filter_dialogs.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';

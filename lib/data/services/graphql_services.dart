@@ -1,8 +1,11 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:media_market_challenge/app_config.dart';
+import 'package:media_market_challenge/domain/models/fetch_issue_config.dart';
+import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issue_details.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
+import 'package:media_market_challenge/domain/extensions/enum_extensions.dart';
 import 'package:media_market_challenge/tokens.dart';
 
 class GraphqlIssuesService implements IssuesRepository {
@@ -27,26 +30,22 @@ class GraphqlIssuesService implements IssuesRepository {
   static GraphqlIssuesService? _instance;
 
   @override
-  Future<IssuesPageInfo> getIssues({
-    required String repoName,
-    required String repoOwner,
-    int pageSize = 30,
-    String? cursor,
-    String orderBy = 'CREATED_AT',
-    String direction = 'ASC',
-    List<String> issueState = const <String>['OPEN', 'CLOSED'],
-  }) async {
+  Future<IssuesPageInfo> getIssues({required FetchIssuesConfig config}) async {
     final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
       QueryOptions<dynamic>(
         document: gql(getIssuesQuery),
         variables: <String, dynamic>{
-          'pageSize': pageSize,
-          'owner': repoOwner,
-          'name': repoName,
-          'cursor': cursor,
-          'orderBy': orderBy,
-          'direction': direction,
-          'stateFilter': issueState,
+          'pageSize': config.pageSize,
+          'owner': config.repoOwner,
+          'name': config.repoName,
+          'cursor': config.cursor,
+          'orderBy': config.orderBy.screamingSnakeCaseName,
+          'direction': config.direction.screamingSnakeCaseName,
+          'stateFilter': config.states
+              .map<String>(
+                (IssueState state) => state.screamingSnakeCaseName,
+              )
+              .toList(),
         },
       ),
     );
