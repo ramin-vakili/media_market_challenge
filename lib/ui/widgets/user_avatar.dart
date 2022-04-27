@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class UserAvatar extends StatelessWidget {
   const UserAvatar({
     required this.avatarUrl,
-    this.width = 64,
-    this.height = 64,
+    this.width = 46,
+    this.height = 46,
     Key? key,
   }) : super(key: key);
 

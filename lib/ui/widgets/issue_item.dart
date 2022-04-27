@@ -13,22 +13,25 @@ class IssueItem extends StatelessWidget {
   final bool isVisited;
 
   @override
-  Widget build(BuildContext context) => ListTile(
-        leading: Hero(
-          tag: issue.id,
-          child: UserAvatar(avatarUrl: issue.issueAuthor.avatarUrl),
-        ),
-        title: Text(issue.title),
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => IssueDetailsPage(
-                issue: issue,
-                issuesRepository: GetIt.instance.get<IssuesRepository>(),
+  Widget build(BuildContext context) => SizedBox(
+        height: 64,
+        child: ListTile(
+          leading: Hero(
+            tag: issue.id,
+            child: UserAvatar(avatarUrl: issue.issueAuthor.avatarUrl),
+          ),
+          title: Text(issue.title),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => IssueDetailsPage(
+                  issue: issue,
+                  issuesRepository: GetIt.instance.get<IssuesRepository>(),
+                ),
               ),
-            ),
-          );
-        },
-        trailing: isVisited ? const Icon(Icons.remove_red_eye) : null,
+            );
+          },
+          trailing: isVisited ? const Icon(Icons.remove_red_eye) : null,
+        ),
       );
 }

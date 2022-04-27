@@ -6,6 +6,7 @@ import 'package:media_market_challenge/ui/dialogs/filter_dialogs.dart';
 import 'package:media_market_challenge/ui/state_management/github_issues/github_issues_cubit.dart';
 import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
 import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_state.dart';
+import 'package:media_market_challenge/ui/widgets/github_app_bar.dart';
 import 'package:media_market_challenge/ui/widgets/issue_item.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,30 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('MediaMarktChallenge'),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                showSelectOrderingDialog(
-                  context: context,
-                  orderField: _githubIssuesCubit.currentConfig.orderBy,
-                  orderDirection: _githubIssuesCubit.currentConfig.direction,
-                  onOrderingChanged: (
-                    IssueOrderField field,
-                    OrderDirection direction,
-                  ) {
-                    _githubIssuesCubit.updateOrder(
-                      orderBy: field,
-                      direction: direction,
-                    );
-                  },
-                );
-              },
-              icon: const Icon(Icons.sort_by_alpha),
-            )
-          ],
-        ),
+        appBar: _buildAppBar(context),
         body: BlocBuilder<GithubIssuesCubit, GithubIssuesState>(
           bloc: _githubIssuesCubit,
           builder: (_, GithubIssuesState state) {
@@ -80,12 +58,37 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
+  PreferredSizeWidget _buildAppBar(BuildContext context) => GithubAppBar(
+        title: const Text('MediaMarktChallenge'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              showSelectOrderingDialog(
+                context: context,
+                orderField: _githubIssuesCubit.currentConfig.orderBy,
+                orderDirection: _githubIssuesCubit.currentConfig.direction,
+                onOrderingChanged: (
+                  IssueOrderField field,
+                  OrderDirection direction,
+                ) {
+                  _githubIssuesCubit.updateOrder(
+                    orderBy: field,
+                    direction: direction,
+                  );
+                },
+              );
+            },
+            icon: const Icon(Icons.sort_by_alpha),
+          )
+        ],
+      );
+
   Widget _buildIssuesList(List<Issue> issues) =>
       BlocBuilder<VisitedIssuesCubit, VisitedIssuesState>(
           bloc: BlocProvider.of<VisitedIssuesCubit>(context),
           builder: (_, VisitedIssuesState visitedIssuesState) {
             if (visitedIssuesState is VisitedIssuesLoadedState) {
-              return ListView.builder(
+              return ListView.separated(
                 controller: _scrollController,
                 itemBuilder: (_, int index) {
                   late Widget item;
@@ -106,7 +109,11 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 itemCount: issues.length + 1,
-                itemExtent: 50,
+                separatorBuilder: (_, int index) => Container(
+                  width: double.infinity,
+                  height: 2,
+                  color: Theme.of(context).dividerColor,
+                ),
               );
             }
             return const CircularProgressIndicator();
