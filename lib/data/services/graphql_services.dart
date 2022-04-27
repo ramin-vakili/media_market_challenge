@@ -45,6 +45,7 @@ class GraphqlIssuesService implements IssuesRepository {
           'cursor': cursor,
           'orderBy': orderBy,
           'direction': direction,
+          'stateFilter': 'CLOSED',
         },
       ),
     );
@@ -93,14 +94,15 @@ const String getIssuesQuery = r'''
         $name: String!, 
         $cursor: String,
         $orderBy: IssueOrderField!,
-        $direction: OrderDirection!
+        $direction: OrderDirection!,
+        $stateFilter: [IssueState!],
       ) {
           repository(owner: $owner, name: $name) {
             issues(
               last: $pageSize
               before: $cursor
               orderBy: {field: $orderBy, direction: $direction}
-              filterBy: {states: OPEN}
+              filterBy: {states: $stateFilter}
             ) {
               edges {
                 node {
