@@ -20,7 +20,7 @@ class _DialogWrapperState extends State<DialogWrapper>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 200),
     )..forward();
   }
 

@@ -15,7 +15,8 @@ Future<void> showSelectOrderingDialog({
       context: context,
       builder: (BuildContext context) => DialogWrapper(
         child: AlertDialog(
-          title: const Text('Select ordering'),
+          backgroundColor: Theme.of(context).primaryColor,
+          title: const Text('Issues\' order'),
           content: SelectOrderingDialog(
             orderField: orderField,
             orderDirection: orderDirection,
@@ -40,7 +41,8 @@ Future<void> showSelectStateFilterDialog({
       context: context,
       builder: (BuildContext context) => DialogWrapper(
         child: AlertDialog(
-          title: const Text('Select ordering'),
+          backgroundColor: Theme.of(context).primaryColor,
+          title: const Text('Issues\' state'),
           content: SelectStateFilterDialog(
             issuesState: states,
             onStatesChanged: onStatesChanged,

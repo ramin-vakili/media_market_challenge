@@ -53,7 +53,10 @@ class _HomePageState extends State<HomePage> {
             } else if (state is GithubIssuesErrorState) {
               return Center(child: Text(state.message));
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return const Align(
+                child: CircularProgressIndicator(),
+                alignment: Alignment.topCenter,
+              );
             }
           },
         ),

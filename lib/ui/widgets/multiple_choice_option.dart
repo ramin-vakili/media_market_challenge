@@ -36,22 +36,33 @@ class _MultipleChoiceOptionState<T extends Enum>
     return Wrap(
       children: List<Widget>.generate(widget.options.length, (int index) {
         final T t = widget.options[index];
-        return InkWell(
-          onTap: () => setState(() {
-            if (!_selectedOptions.contains(t)) {
-              _selectedOptions.add(t);
-            } else {
-              if (_selectedOptions.length < 2) {
-                return;
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: InkWell(
+            onTap: () => setState(() {
+              if (!_selectedOptions.contains(t)) {
+                _selectedOptions.add(t);
+              } else {
+                if (_selectedOptions.length < 2) {
+                  return;
+                }
+                _selectedOptions.remove(t);
               }
-              _selectedOptions.remove(t);
-            }
-            widget.onOptionSelected?.call(_selectedOptions);
-          }),
-          child: Chip(
-            backgroundColor:
-                _selectedOptions.contains(t) ? Colors.green : Colors.grey,
-            label: Text(t.name),
+              widget.onOptionSelected?.call(_selectedOptions);
+            }),
+            child: Chip(
+              backgroundColor: _selectedOptions.contains(t)
+                  ? Colors.green
+                  : Colors.grey.withOpacity(0.5),
+              label: Text(
+                t.name,
+                style: TextStyle(
+                  color: _selectedOptions.contains(t)
+                      ? Colors.white
+                      : Colors.black87,
+                ),
+              ),
+            ),
           ),
         );
       }),

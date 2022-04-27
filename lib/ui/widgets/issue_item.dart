@@ -58,5 +58,5 @@ class IssueItem extends StatelessWidget {
       );
 
   Widget _buildIsVisited() =>
-      isVisited ? const Icon(Icons.remove_red_eye) : const SizedBox.shrink();
+      isVisited ? const Icon(Icons.remove_red_eye) : const SizedBox(height: 16);
 }

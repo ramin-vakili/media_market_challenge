@@ -34,14 +34,24 @@ class _SingleChooseOptionState<T extends Enum>
     return Wrap(
       children: List<Widget>.generate(widget.options.length, (int index) {
         final T t = widget.options[index];
-        return InkWell(
-          onTap: () => setState(() {
-            _selectedOption = t;
-            widget.onOptionSelected?.call(t);
-          }),
-          child: Chip(
-            backgroundColor: t == _selectedOption ? Colors.green : Colors.grey,
-            label: Text(t.name),
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: InkWell(
+            onTap: () => setState(() {
+              _selectedOption = t;
+              widget.onOptionSelected?.call(t);
+            }),
+            child: Chip(
+              backgroundColor: t == _selectedOption
+                  ? Colors.green
+                  : Colors.grey.withOpacity(0.5),
+              label: Text(
+                t.name,
+                style: TextStyle(
+                  color: t == _selectedOption ? Colors.white : Colors.black87,
+                ),
+              ),
+            ),
           ),
         );
       }),
