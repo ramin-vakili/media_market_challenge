@@ -46,21 +46,7 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
-            SliverPersistentHeader(
-              delegate: IssueDetailsHeader(
-                buildIcon: (double size) => Hero(
-                  tag: widget.issue.id,
-                  child: UserAvatar(
-                    width: size,
-                    height: size,
-                    avatarUrl: widget.issue.issueAuthor.avatarUrl,
-                  ),
-                ),
-                title: widget.issue.issueAuthor.login,
-                title2: _formatter.format(widget.issue.createdAt),
-              ),
-              pinned: true,
-            ),
+            _buildUserAndDateInfo(),
             SliverToBoxAdapter(
               child: _buildIssueDetailsSection(),
             )
@@ -70,24 +56,41 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
     );
   }
 
+  SliverPersistentHeader _buildUserAndDateInfo() => SliverPersistentHeader(
+        delegate: IssueDetailsHeader(
+          buildIcon: (double size) => Hero(
+            tag: widget.issue.id,
+            child: UserAvatar(
+              width: size,
+              height: size,
+              avatarUrl: widget.issue.issueAuthor.avatarUrl,
+            ),
+          ),
+          title: widget.issue.issueAuthor.login,
+          title2: _formatter.format(widget.issue.createdAt),
+        ),
+        pinned: true,
+      );
+
   BlocBuilder<GithubIssueDetailsCubit, GithubIssueDetailsState>
       _buildIssueDetailsSection() {
     return BlocBuilder<GithubIssueDetailsCubit, GithubIssueDetailsState>(
       bloc: _issueDetailsCubit,
       builder: (_, GithubIssueDetailsState state) {
         if (state is GithubIssueDetailsLoadedState) {
-          return Column(
-            children: <Widget>[
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text(state.issueDetails.issueAuthor.login),
-                  Text(state.issueDetails.createdAt.toIso8601String()),
-                ],
-              ),
-              _buildIssueBody(state),
-            ],
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 8),
+                Row(
+                  children: <Widget>[
+                    Expanded(child: _buildIssueTItle(state)),
+                  ],
+                ),
+                _buildIssueBody(state),
+              ],
+            ),
           );
         } else if (state is GithubIssueDetailsErrorState) {
           return Text(state.message);
@@ -95,6 +98,16 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
 
         return const Center(child: CircularProgressIndicator());
       },
+    );
+  }
+
+  Text _buildIssueTItle(GithubIssueDetailsLoadedState state) {
+    return Text(
+      state.issueDetails.title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontStyle: FontStyle.italic,
+      ),
     );
   }
 
