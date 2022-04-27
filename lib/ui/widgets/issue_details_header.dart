@@ -30,17 +30,25 @@ class IssueDetailsHeader extends SliverPersistentHeaderDelegate {
         child: Stack(
           children: <Widget>[
             Align(
-              alignment: Alignment(0, 1 - (shrinkOffset / maxExtent)),
+              alignment: Alignment(
+                0,
+                _calculateTitleHorizontalAlignment(
+                  shrinkOffset,
+                ),
+              ),
               child: Text(title),
             ),
             Align(
               alignment: Alignment(-(shrinkOffset / maxExtent), 0),
-              child: buildIcon(minExtent +
-                  (1 - (shrinkOffset / maxExtent)) *
-                      (maxExtent - minExtent - 64)),
+              child: buildIcon(_calculateAvatarSize(shrinkOffset)),
             ),
             Align(
-              alignment: Alignment(1, 1 - (shrinkOffset / maxExtent)),
+              alignment: Alignment(
+                1,
+                _calculateTitleHorizontalAlignment(
+                  shrinkOffset,
+                ),
+              ),
               child: Text(title2),
             ),
           ],
@@ -48,6 +56,14 @@ class IssueDetailsHeader extends SliverPersistentHeaderDelegate {
       ),
     );
   }
+
+  double _calculateTitleHorizontalAlignment(double shrinkOffset) =>
+      1 - (shrinkOffset / maxExtent);
+
+  double _calculateAvatarSize(double shrinkOffset) =>
+      minExtent +
+      (_calculateTitleHorizontalAlignment(shrinkOffset)) *
+          (maxExtent - minExtent - 64);
 
   @override
   double get maxExtent => 260;

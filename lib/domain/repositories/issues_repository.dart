@@ -11,7 +11,7 @@ abstract class IssuesRepository {
     String? cursor,
     String orderBy,
     String direction,
-    String issueState,
+    List<String> issueState,
   });
 
   /// Gets an issue.

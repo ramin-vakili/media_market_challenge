@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 
 @immutable
