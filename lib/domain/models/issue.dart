@@ -9,7 +9,7 @@ class Issue {
     required this.createdAt,
     required this.issueAuthor,
     this.number = 0,
-    this.state = 'CLOSED',
+    this.state = IssueState.close,
   });
 
   factory Issue.fromJson(Map<String, dynamic> json) => Issue(
@@ -19,7 +19,7 @@ class Issue {
         url: json['url'],
         issueAuthor: IssueAuthor.fromJson(json['author']),
         number: json['number'],
-        state: json['state'],
+        state: json['state'] == 'OPEN' ? IssueState.open : IssueState.close,
       );
 
   final String id;
@@ -28,7 +28,7 @@ class Issue {
   final String url;
   final IssueAuthor issueAuthor;
   final int number;
-  final String state;
+  final IssueState state;
 
   @override
   bool operator ==(covariant Issue other) => other.id == id;
@@ -64,3 +64,5 @@ class IssueAuthor {
   @override
   int get hashCode => hashValues(login, avatarUrl);
 }
+
+enum IssueState { open, close }

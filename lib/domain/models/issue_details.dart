@@ -12,18 +12,19 @@ class IssueDetails extends Issue {
     required this.body,
     required this.bodyHTML,
     int number = 0,
-    String state = 'CLOSED',
+    IssueState state = IssueState.close,
   }) : super(
-          id: id,
-          title: title,
-          createdAt: createdAt,
-          url: url,
-          issueAuthor: issueAuthor,
-          number: number,
-          state: state,
-        );
+    id: id,
+    title: title,
+    createdAt: createdAt,
+    url: url,
+    issueAuthor: issueAuthor,
+    number: number,
+    state: state,
+  );
 
-  factory IssueDetails.fromJson(Map<String, dynamic> json) => IssueDetails(
+  factory IssueDetails.fromJson(Map<String, dynamic> json) =>
+      IssueDetails(
         id: json['id'],
         title: json['title'],
         createdAt: DateTime.parse(json['createdAt']),
@@ -32,7 +33,7 @@ class IssueDetails extends Issue {
         body: json['body'],
         bodyHTML: json['bodyHTML'],
         number: json['number'],
-        state: json['state'],
+        state: json['state'] == 'OPEN' ? IssueState.open : IssueState.close,
       );
 
   final String body;
