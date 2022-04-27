@@ -26,6 +26,13 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
     await fetchIssues(config: _config);
   }
 
+  Future<void> updateStatesFilter({required List<IssueState> states}) async {
+    _config = _config.copyWith(states: states);
+
+    emit(GithubIssuesLoadingState());
+    await fetchIssues(config: _config);
+  }
+
   Future<void> fetchIssues({
     required FetchIssuesConfig config,
     bool refresh = true,

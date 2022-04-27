@@ -80,7 +80,19 @@ class _HomePageState extends State<HomePage> {
               );
             },
             icon: const Icon(Icons.sort_by_alpha),
-          )
+          ),
+          IconButton(
+            onPressed: () {
+              showSelectStateFilterDialog(
+                context: context,
+                states: _githubIssuesCubit.currentConfig.states,
+                onStatesChanged: (List<IssueState> states) {
+                  _githubIssuesCubit.updateStatesFilter(states: states);
+                },
+              );
+            },
+            icon: const Icon(Icons.check_circle_outline_rounded),
+          ),
         ],
       );
 
