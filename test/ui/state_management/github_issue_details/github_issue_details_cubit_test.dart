@@ -71,6 +71,7 @@ class _MockGithubIssuesService implements IssuesRepository {
     String? cursor,
     String orderBy = 'CREATED_AT',
     String direction = 'ASC',
+    String? issueState,
   }) {
     throw UnimplementedError();
   }

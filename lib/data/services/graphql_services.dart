@@ -34,6 +34,7 @@ class GraphqlIssuesService implements IssuesRepository {
     String? cursor,
     String orderBy = 'CREATED_AT',
     String direction = 'ASC',
+    String issueState = 'ALL',
   }) async {
     final QueryResult<dynamic> result = await _graphQLClient.query<dynamic>(
       QueryOptions<dynamic>(
@@ -45,7 +46,7 @@ class GraphqlIssuesService implements IssuesRepository {
           'cursor': cursor,
           'orderBy': orderBy,
           'direction': direction,
-          'stateFilter': 'CLOSED',
+          'stateFilter': issueState,
         },
       ),
     );

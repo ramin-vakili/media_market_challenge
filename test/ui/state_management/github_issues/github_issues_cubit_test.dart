@@ -18,6 +18,7 @@ class _MockGithubIssuesService implements IssuesRepository {
     String? cursor,
     String orderBy = 'CREATED_AT',
     String direction = 'ASC',
+    String? issueState,
   }) {
     if (repoName == 'mock_repo') {
       return Future<IssuesPageInfo>.value(

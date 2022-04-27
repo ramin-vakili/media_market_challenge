@@ -11,6 +11,7 @@ class RestApiIssuesService implements IssuesRepository {
     String? cursor,
     String orderBy = 'CREATED_AT',
     String direction = 'ASC',
+    String issueState = 'ALL',
   }) {
     // TODO(Ramin): Get data from REST API.
     throw UnimplementedError();
