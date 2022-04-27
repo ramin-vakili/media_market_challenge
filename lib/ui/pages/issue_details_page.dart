@@ -7,6 +7,7 @@ import 'package:media_market_challenge/domain/repositories/issues_repository.dar
 import 'package:media_market_challenge/ui/state_management/github_issue_details/github_issue_details_cubit.dart';
 import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
 import 'package:media_market_challenge/ui/widgets/issue_details_header.dart';
+import 'package:media_market_challenge/ui/widgets/issue_state.dart';
 import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
 
 DateFormat _formatter = DateFormat('yyyy-MM-dd');
@@ -49,7 +50,8 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
             _buildUserAndDateInfo(),
             SliverToBoxAdapter(
               child: _buildIssueDetailsSection(),
-            )
+            ),
+            const SliverFillRemaining()
           ],
         ),
       ),
@@ -86,6 +88,10 @@ class _IssueDetailsPageState extends State<IssueDetailsPage> {
                 Row(
                   children: <Widget>[
                     Expanded(child: _buildIssueTItle(state)),
+                    const SizedBox(width: 4),
+                    state.issueDetails.state == IssueState.open
+                        ? const IssueStateOpen()
+                        : const IssueStateClosed()
                   ],
                 ),
                 _buildIssueBody(state),

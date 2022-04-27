@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
 import 'package:media_market_challenge/ui/pages/issue_details_page.dart';
+import 'package:media_market_challenge/ui/widgets/issue_state.dart';
 import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
 
 class IssueItem extends StatelessWidget {
@@ -31,7 +32,17 @@ class IssueItem extends StatelessWidget {
               ),
             );
           },
-          trailing: isVisited ? const Icon(Icons.remove_red_eye) : null,
+          trailing: Column(
+            children: <Widget>[
+              _buildIsVisited(),
+              issue.state == IssueState.open
+                  ? const IssueStateOpen()
+                  : const IssueStateClosed()
+            ],
+          ),
         ),
       );
+
+  Widget _buildIsVisited() =>
+      isVisited ? const Icon(Icons.remove_red_eye) : const SizedBox.shrink();
 }
