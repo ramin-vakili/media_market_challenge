@@ -39,18 +39,19 @@ class _IssueState extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(4),
-        width: 64,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: color,
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Icon(icon, color: Colors.white, size: 16),
             const SizedBox(width: 2),
             Text(
               state,
               style: const TextStyle(fontSize: 12, color: Colors.white),
+              overflow: TextOverflow.fade,
             )
           ],
         ),

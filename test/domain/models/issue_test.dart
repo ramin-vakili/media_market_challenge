@@ -11,7 +11,7 @@ void main() {
         Issue.fromJson(jsonDecode(issuesMockData).first['node']);
 
     expect(issue.id, 'I_kwDOAeUeuM5IJQZX');
-    expect(issue.state, 'OPEN');
+    expect(issue.state, IssueState.open);
     expect(issue.title, contains('Rename the test component'));
     expect(issue.number, 102266);
     expect(issue.url, 'https://github.com/flutter/flutter/issues/102266');

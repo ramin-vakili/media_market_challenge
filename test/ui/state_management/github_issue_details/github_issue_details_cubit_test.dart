@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issue_details.dart';
 import 'package:media_market_challenge/domain/models/issues_page_info.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
@@ -35,7 +36,7 @@ void main() {
           githubIssueDetailsCubit.state as GithubIssueDetailsLoadedState;
 
       expect(loadedState.issueDetails.id, 'I_kwDOAeUeuM5IJQZX');
-      expect(loadedState.issueDetails.state, 'OPEN');
+      expect(loadedState.issueDetails.state, IssueState.open);
       expect(loadedState.issueDetails.body, 'This is body');
       expect(
         loadedState.issueDetails.title,

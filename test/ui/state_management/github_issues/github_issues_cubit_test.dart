@@ -78,7 +78,7 @@ void main() {
       final Issue firstIssue = issues.first;
       expect(firstIssue.id, 'I_kwDOAeUeuM5IJQZX');
       expect(firstIssue.number, 102266);
-      expect(firstIssue.state, 'OPEN');
+      expect(firstIssue.state, IssueState.open);
       expect(
         firstIssue.url,
         'https://github.com/flutter/flutter/issues/102266',

@@ -11,6 +11,8 @@ import 'package:media_market_challenge/domain/repositories/visited_issues_reposi
 import 'package:media_market_challenge/ui/pages/issue_details_page.dart';
 import 'package:media_market_challenge/ui/state_management/github_issue_details/github_issue_details_cubit.dart';
 import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_cubit.dart';
+import 'package:media_market_challenge/ui/widgets/issue_state.dart';
+import 'package:media_market_challenge/ui/widgets/user_avatar.dart';
 
 import '../state_management/github_issues/issues_mock_data.dart';
 
@@ -24,16 +26,17 @@ void main() {
             id: '22433',
             title: 'Sample title, ',
             url: '',
-            issueAuthor: const IssueAuthor(login: '', avatarUrl: ''),
+            issueAuthor: const IssueAuthor(login: 'filmil', avatarUrl: ''),
             createdAt: DateTime.now(),
             number: 102266,
           ),
         ),
       );
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      expect(find.byType(Row), findsOneWidget);
+      expect(find.byType(IssueStateOpen), findsOneWidget);
       expect(find.text('This is body'), findsOneWidget);
+      expect(find.byType(UserAvatar), findsOneWidget);
       expect(find.text('filmil'), findsOneWidget);
     });
 

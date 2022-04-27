@@ -16,29 +16,43 @@ class IssueItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 64,
-        child: ListTile(
-          leading: Hero(
-            tag: issue.id,
-            child: UserAvatar(avatarUrl: issue.issueAuthor.avatarUrl),
-          ),
-          title: Text(issue.title),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => IssueDetailsPage(
-                  issue: issue,
-                  issuesRepository: GetIt.instance.get<IssuesRepository>(),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => IssueDetailsPage(
+                    issue: issue,
+                    issuesRepository: GetIt.instance.get<IssuesRepository>(),
+                  ),
                 ),
-              ),
-            );
-          },
-          trailing: Column(
-            children: <Widget>[
-              _buildIsVisited(),
-              issue.state == IssueState.open
-                  ? const IssueStateOpen()
-                  : const IssueStateClosed()
-            ],
+              );
+            },
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 64,
+                  child: Hero(
+                    tag: issue.id,
+                    child: UserAvatar(avatarUrl: issue.issueAuthor.avatarUrl),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Expanded(child: Text(issue.title)),
+                const SizedBox(width: 8),
+                SizedBox(
+                  child: Column(
+                    children: <Widget>[
+                      _buildIsVisited(),
+                      issue.state == IssueState.open
+                          ? const IssueStateOpen()
+                          : const IssueStateClosed()
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );
