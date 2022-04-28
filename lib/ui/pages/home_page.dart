@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                     item = IssueItem(
                       issue: issues[index],
                       isVisited:
-                          visitedIssuesState.ids.contains(issues[index].id),
+                          visitedIssuesState.isIssueVisited(issues[index]),
                     );
                   }
 

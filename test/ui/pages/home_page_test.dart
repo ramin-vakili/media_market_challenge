@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:media_market_challenge/domain/logic/visited_issue_handler.dart';
 import 'package:media_market_challenge/domain/models/fetch_issue_config.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
 import 'package:media_market_challenge/domain/models/issue_details.dart';
@@ -112,8 +113,11 @@ class _TestWrapper extends StatelessWidget {
           providers: <BlocProvider<dynamic>>[
             BlocProvider<GithubIssuesCubit>(create: (_) => issuesCubit),
             BlocProvider<VisitedIssuesCubit>(
-              create: (_) => VisitedIssuesCubit(_MockVisitedIssuesService())
-                ..fetchVisitedIssues(),
+              create: (_) => VisitedIssuesCubit(
+                VisitedIssueHandler(
+                  _MockVisitedIssuesService(),
+                ),
+              )..fetchVisitedIssues(),
             ),
           ],
           child: const HomePage(),

@@ -1,31 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_market_challenge/domain/logic/visited_issue_handler.dart';
 import 'package:media_market_challenge/domain/models/issue.dart';
-import 'package:media_market_challenge/domain/repositories/visited_issues_repository.dart';
 import 'package:media_market_challenge/ui/state_management/visited_issues/visited_issues_state.dart';
 
 class VisitedIssuesCubit extends Cubit<VisitedIssuesState> {
-  VisitedIssuesCubit(this.visitedIssuesService)
+  VisitedIssuesCubit(this.visitedIssueHandler)
       : super(VisitedIssuesLoadingState());
 
-  final VisitedIssuesRepository visitedIssuesService;
-
-  final List<String> _visitedIssues = <String>[];
+  final VisitedIssueHandler visitedIssueHandler;
 
   Future<void> fetchVisitedIssues() async {
-    _visitedIssues
-      ..clear()
-      ..addAll(await visitedIssuesService.fetchVisitedIssues());
-
-    emit(VisitedIssuesLoadedState(_visitedIssues));
+    await visitedIssueHandler.fetchVisitedIssues();
+    emit(VisitedIssuesLoadedState(_isIssueVisited));
   }
 
+  bool _isIssueVisited(Issue issue) =>
+      visitedIssueHandler.isIssueVisited(issue);
+
   Future<void> markAsVisited(Issue issue) async {
-    if (!_visitedIssues.contains(issue.id)) {
-      _visitedIssues.add(issue.id);
-    }
-
-    await visitedIssuesService.markAsVisited(issue);
-
-    emit(VisitedIssuesLoadedState(_visitedIssues));
+    await visitedIssueHandler.markAsVisited(issue);
+    emit(VisitedIssuesLoadedState(_isIssueVisited));
   }
 }

@@ -1,9 +1,11 @@
+import 'package:media_market_challenge/domain/models/issue.dart';
+
 abstract class VisitedIssuesState {}
 
 class VisitedIssuesLoadingState extends VisitedIssuesState {}
 
 class VisitedIssuesLoadedState extends VisitedIssuesState {
-  VisitedIssuesLoadedState(this.ids);
+  VisitedIssuesLoadedState(this.isIssueVisited);
 
-  final List<String> ids;
+  final bool Function(Issue) isIssueVisited;
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:media_market_challenge/domain/logic/visited_issue_handler.dart';
 import 'package:media_market_challenge/domain/repositories/issues_repository.dart';
-import 'package:media_market_challenge/domain/repositories/visited_issues_repository.dart';
 import 'package:media_market_challenge/ui/pages/home_page.dart';
 
 import 'ui/state_management/github_issues/github_issues_cubit.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<VisitedIssuesCubit>(
           create: (_) =>
-              VisitedIssuesCubit(GetIt.instance.get<VisitedIssuesRepository>())
+              VisitedIssuesCubit(GetIt.instance.get<VisitedIssueHandler>())
                 ..fetchVisitedIssues(),
         )
       ],
