@@ -20,14 +20,18 @@ class GithubIssuesCubit extends Cubit<GithubIssuesState> {
     IssueOrderField orderBy = IssueOrderField.createdAt,
     OrderDirection direction = OrderDirection.asc,
   }) async {
-    _config = _config.copyWith(orderBy: orderBy, direction: direction);
+    _config = _config.copyWith(
+      orderBy: orderBy,
+      direction: direction,
+      cursor: null,
+    );
 
     emit(GithubIssuesLoadingState());
     await fetchIssues(config: _config);
   }
 
   Future<void> updateStatesFilter({required List<IssueState> states}) async {
-    _config = _config.copyWith(states: states);
+    _config = _config.copyWith(states: states, cursor: null);
 
     emit(GithubIssuesLoadingState());
     await fetchIssues(config: _config);

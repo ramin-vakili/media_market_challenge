@@ -32,7 +32,7 @@ class FetchIssuesConfig {
     String? repoName,
     String? repoOwner,
     List<IssueState>? states,
-    String? cursor,
+    required String? cursor,
   }) =>
       FetchIssuesConfig(
         orderBy: orderBy ?? this.orderBy,
@@ -41,7 +41,7 @@ class FetchIssuesConfig {
         repoName: repoName ?? this.repoName,
         repoOwner: repoOwner ?? this.repoOwner,
         states: states ?? this.states,
-        cursor: cursor ?? this.cursor,
+        cursor: cursor,
       );
 
   @override
