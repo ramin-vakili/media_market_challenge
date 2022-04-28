@@ -51,6 +51,7 @@ class _MultipleChoiceOptionState<T extends Enum>
               widget.onOptionSelected?.call(_selectedOptions);
             }),
             child: Chip(
+              key: ValueKey<String>(t.name),
               backgroundColor: _selectedOptions.contains(t)
                   ? Colors.green
                   : Colors.grey.withOpacity(0.5),
