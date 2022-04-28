@@ -13,7 +13,7 @@ To run the app get a Github access token and enter it in the file `lib/tokens.da
 Following clean architecture app separated into 3 layer,
  - UI -> Just classes related to only representation of the app, could be replaced by any other interface, like command line interface.
  - Domain -> Only should consists of the repository interfaces, use cases and entities, completely isolated from the the details, like ui or data sources, etc which are prone to change.
- - Data -> Where the data comes from, Implementation of domain layer repositores, could switch between different data source with ease by implementing domain layer repositories or mock them in order to write unit tests.
+ - Data -> Where the data comes from, Implementation of domain layer repositores. We can switch between different data source with ease by implementing domain layer repositories or mock them in order to write unit tests.
 
 ### Dependency management
 Used [get_it](https://pub.dev/packages/get_it) package as the service locator to manage the implementation instances of the domain repositories.
