@@ -42,6 +42,7 @@ class _SingleChooseOptionState<T extends Enum>
               widget.onOptionSelected?.call(t);
             }),
             child: Chip(
+              key: ValueKey<String>(t.name),
               backgroundColor: t == _selectedOption
                   ? Colors.green
                   : Colors.grey.withOpacity(0.5),
