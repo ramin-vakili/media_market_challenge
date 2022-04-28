@@ -38,6 +38,7 @@ class _IssueState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        key: const ValueKey<String>('issue-state-icon-key'),
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
